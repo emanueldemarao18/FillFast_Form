@@ -1,38 +1,38 @@
-// Configure a inicialização do Firebase com as suas chaves de configuração
-var config = {
+import { initializeApp } from 'firebase/app';
+import { getAuth, confirmPasswordReset, updatePassword } from 'firebase/auth';
+
+const config = {
   apiKey: "AIzaSyA1elJaTMHC0I1_IyFlt4x31_lu-AoB_Vc",
   authDomain: "fillfast-385014.firebaseapp.com",
-  projectId: "fillfast-385014"
+  projectId: "fillfast-385014",
 };
-firebase.initializeApp(config);
 
-// Reference to the Firebase authentication
-var auth = firebase.auth();
+// Inicialize o Firebase
+const app = initializeApp(config);
+const auth = getAuth(app);
 
-// Form submission event listener
+// Adicione o evento de envio do formulário
 document.getElementById("reset-form").addEventListener("submit", function(event) {
   event.preventDefault();
-  
-  // Get user inputs
-  var oldPassword = document.getElementById("old-password").value;
-  var newPassword = document.getElementById("new-password").value;
-  
-  // Reauthenticate user with old password
-  var user = auth.currentUser;
-  var credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
-  
-  user.reauthenticateWithCredential(credential)
-    .then(function() {
-      // Update password
-      user.updatePassword(newPassword)
-        .then(function() {
-          document.getElementById("message").innerHTML = "Senha atualizada com sucesso!";
-        })
-        .catch(function(error) {
-          document.getElementById("message").innerHTML = "Erro ao atualizar a senha: " + error.message;
-        });
+
+  const newPassword = document.getElementById("new-password").value;
+  const confirmPassword = document.getElementById("confirm-password").value;
+
+  if (newPassword !== confirmPassword) {
+    document.getElementById("message").textContent = "As senhas não coincidem.";
+    return;
+  }
+
+  // Obtém o código de redefinição de senha do parâmetro da URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const oobCode = urlParams.get("oobCode");
+
+  // Redefine a senha usando o código de redefinição de senha
+  confirmPasswordReset(auth, oobCode, newPassword)
+    .then(() => {
+      document.getElementById("message").textContent = "Senha redefinida com sucesso!";
     })
-    .catch(function(error) {
-      document.getElementById("message").innerHTML = "Erro de autenticação: " + error.message;
+    .catch((error) => {
+      document.getElementById("message").textContent = "Erro ao redefinir a senha: " + error.message;
     });
 });

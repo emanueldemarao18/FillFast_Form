@@ -1,8 +1,21 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, updatePassword, onAuthStateChanged } from 'firebase/auth';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/storage';
+
+// Resto do seu código...
+
+
+
+
+
 
 const firebaseConfig = {
-  // Coloque aqui as suas configurações do Firebase
+
+  apiKey: "AIzaSyA1elJaTMHC0I1_IyFlt4x31_lu-AoB_Vc",
+  authDomain: "fillfast-385014.firebaseapp.com",
+  projectId: "fillfast-385014",
 };
 
 // Inicialize o Firebase

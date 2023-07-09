@@ -1,14 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, confirmPasswordReset, updatePassword } from 'firebase/auth';
+import { getAuth, updatePassword, onAuthStateChanged } from 'firebase/auth';
 
-const config = {
-  apiKey: "AIzaSyA1elJaTMHC0I1_IyFlt4x31_lu-AoB_Vc",
-  authDomain: "fillfast-385014.firebaseapp.com",
-  projectId: "fillfast-385014",
+const firebaseConfig = {
+  // Coloque aqui as suas configurações do Firebase
 };
 
 // Inicialize o Firebase
-const app = initializeApp(config);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Adicione o evento de envio do formulário
@@ -23,16 +21,20 @@ document.getElementById("reset-form").addEventListener("submit", function(event)
     return;
   }
 
-  // Obtém o código de redefinição de senha do parâmetro da URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const oobCode = urlParams.get("oobCode");
+  const user = auth.currentUser;
 
-  // Redefine a senha usando o código de redefinição de senha
-  confirmPasswordReset(auth, oobCode, newPassword)
+  updatePassword(user, newPassword)
     .then(() => {
       document.getElementById("message").textContent = "Senha redefinida com sucesso!";
     })
     .catch((error) => {
       document.getElementById("message").textContent = "Erro ao redefinir a senha: " + error.message;
     });
+});
+
+// Verifique se o usuário está autenticado e redirecione-o para a página de sucesso
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = "reset-success.html";
+  }
 });

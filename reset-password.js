@@ -1,15 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, updatePassword, onAuthStateChanged } from 'firebase/auth';
-import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-
 // Resto do seu código...
-
-
-
-
-
 
 const firebaseConfig = {
 
@@ -18,11 +11,13 @@ const firebaseConfig = {
   projectId: "fillfast-385014",
 };
 
+
+// Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = getAuth();
 
 // Adicione o evento de envio do formulário
-document.getElementById("reset-form").addEventListener("submit", function(event) {
+document.getElementById("reset-form").addEventListener("submit", function (event) {
   event.preventDefault();
 
   const newPassword = document.getElementById("new-password").value;

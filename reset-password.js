@@ -1,3 +1,4 @@
+
 import { initializeApp } from 'firebase/app';
 import { getAuth, updatePassword, onAuthStateChanged } from 'firebase/auth';
 import 'firebase/firestore';
@@ -12,36 +13,14 @@ const firebaseConfig = {
 };
 
 
+
 // Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-// Adicione o evento de envio do formulário
-document.getElementById("reset-form").addEventListener("submit", function (event) {
-  event.preventDefault();
 
-  const newPassword = document.getElementById("new-password").value;
-  const confirmPassword = document.getElementById("confirm-password").value;
-
-  if (newPassword !== confirmPassword) {
-    document.getElementById("message").textContent = "As senhas não coincidem.";
-    return;
-  }
-
-  const user = auth.currentUser;
-
-  updatePassword(user, newPassword)
-    .then(() => {
-      document.getElementById("message").textContent = "Senha redefinida com sucesso!";
-    })
-    .catch((error) => {
-      document.getElementById("message").textContent = "Erro ao redefinir a senha: " + error.message;
-    });
-});
-
-// Verifique se o usuário está autenticado e redirecione-o para a página de sucesso
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = "reset-success.html";
-  }
+document.getElementById("reset-button").addEventListener("click", function() {
+  // Seu código para redefinir a senha aqui
+  console.log('clicado');
+  alert("Botão de redefinição de senha foi clicado!");
 });

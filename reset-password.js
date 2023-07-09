@@ -18,7 +18,6 @@ const firebaseConfig = {
   projectId: "fillfast-385014",
 };
 
-// Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
